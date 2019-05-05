@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <script src="assets/js/jquery-3.3.1.min.js"></script>
+  <script src="assets/js/theOne.js"></script>
+  <script src="assets/js/wangEditor.js"></script>
+
+</head>
+
+<body>
+  <div style="width:1000px;height:500px;border: 1px solid black">
+    <div id="hxjz"></div>
+    <div id="editor" style="display:none;">
+
+    </div>
+    <button id="update">修改</button>
+    <button id="submit" style="display: none;">提交</button>
+  </div>
+</body>
+
+<script type="text/javascript">
+  var content;
+  var id;
+  var type_id;
+  var title;
+  var editor;
+  $("#update").click(function () {
+    console.info("hhh");
+    var E = window.wangEditor
+    editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    editor.create()
+    editor.txt.html(content);
+    checkDisplay($("#editor"));
+    checkDisplay($("#hxjz"));
+    checkDisplay($("#update"));
+    checkDisplay($("#submit"));
+  });
+
+  function checkDisplay(e) {
+    if (e.css("display") === 'none') {
+      e.css("display", "block");
+    } else {
+      e.css("display", "none");
+    }
+  };
+  $("#submit").click(function () {
+    var pram = {
+      "articleId": id,
+      "typeName": 1,
+      "title": title,
+      "content": editor.txt.html(),
+    };
+    conhtent = editor.txt.html();
+    $.ajax({
+      type: 'post',
+      url: 'http://localhost:8083/article/updateArticles',
+      data: pram,
+      dataType: "json",
+      success: function (data) {
+        console.info(data.states);
+        if (data.states == 200) {
+          alert("修改成功");
+          checkDisplay($("#editor"));
+          checkDisplay($("#hxjz"));
+          checkDisplay($("#update"));
+          checkDisplay($("#submit"));
+
+        } else {
+          alert("修改失败");
+        }
+      },
+    })
+
+  });
+</script>
+
+</html>

@@ -1,0 +1,36 @@
+<html>
+<head>
+<script src="assets/js/wangEditor.js"></script>
+
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+
+<script src="assets/js/index.js"></script>
+</head>
+<body>
+        <div id="editor">
+                <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+                
+            </div>
+            <button id="submit">提交</button>
+        <script type="text/javascript">
+            var E = window.wangEditor
+            var editor = new E('#editor')
+            // 或者 var editor = new E( document.getElementById('editor') )
+            editor.create()
+
+    $("#submit").click(function(){
+
+       alert(editor.txt.html());
+       $.ajax({
+    type : 'get',
+    url : 'http://localhost:8083/article/getArticles',
+    data : editor.txt.html(),
+    success:function(data){
+  $('#hxjz').html(data.article[0].content);
+   },
+})
+  
+   });
+ </script>
+</body>
+</html>
